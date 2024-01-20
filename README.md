@@ -1,5 +1,5 @@
 
-```markdown
+
 # INSTALLATION
 
 - Création du projet depuis la console
