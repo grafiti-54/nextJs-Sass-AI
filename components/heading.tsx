@@ -1,6 +1,6 @@
+import { cn } from "@/lib/utils";
 import { LucideIcon } from "lucide-react";
 
-import { cn } from "@/lib/utils";
 
 interface HeadingProps {
   title: string;
@@ -10,7 +10,7 @@ interface HeadingProps {
   bgColor?: string;
 }
 
-
+//Composant d'entete pour les différents type de conversations avec l'IA.
 export const Heading = ({
   title,
   description,
@@ -19,8 +19,6 @@ export const Heading = ({
   bgColor,
 }: HeadingProps) => {
   return (
-    // <div>Heading component</div>
-    <>
     <div className="px-4 lg:px-8 flex items-center gap-x-3 mb-8">
       <div className={cn("p-2 w-fit rounded-md", bgColor)}>
         <Icon className={cn("w-10 h-10", iconColor)} />
@@ -32,7 +30,5 @@ export const Heading = ({
         </p>
       </div>
     </div>
-    </>
-
   );
 };

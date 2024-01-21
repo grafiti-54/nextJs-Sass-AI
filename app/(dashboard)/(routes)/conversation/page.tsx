@@ -1,9 +1,11 @@
 'use client';
 
+import axios from "axios";
 import * as z from "zod"; // schéma de validation des formulaires
 import { Heading } from "@/components/heading";
 import { MessageSquare } from "lucide-react";
 import { useForm } from "react-hook-form";
+import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 
@@ -11,9 +13,18 @@ import { formSchema } from "./constants"; // Schéma de validation du champs pou
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Loader } from "@/components/loader";
+import { useRouter } from "next/navigation";
+import { ChatCompletionRequestMessage } from "openai";
+import { Empty } from "@/components/ui/empty";
+import { cn } from "@/lib/utils";
+import { BotAvatar } from "@/components/bot-avatar";
+import { UserAvatar } from "@/components/user-avatar";
 
 
 const ConversationPage = () => {
+  const router = useRouter();
+
+  const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
 
   //z.infer extrait le type TypeScript du schéma Zod, ce qui garantit que les données de votre formulaire correspondent au schéma défini
   const form = useForm<z.infer<typeof formSchema>>({
@@ -29,8 +40,22 @@ const ConversationPage = () => {
 
   // Fonction de validation du formulaire
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+    // //console.log(values);
+    try {
+      const userMessage: ChatCompletionRequestMessage = { role: "user", content: values.prompt };
+      const newMessages = [...messages, userMessage];
 
+      const response = await axios.post('/api/conversation', { messages: newMessages });
+      setMessages((current) => [...current, userMessage, response.data]);
+
+      form.reset();
+
+    } catch (error: any) {
+      //TODO Ouverture de la modal pour compte pro
+      console.log(error);
+    } finally {
+      router.refresh();
+    }
   }
 
   return (
@@ -82,7 +107,33 @@ const ConversationPage = () => {
           </Form>
         </div>
         <div className="space-y-4 mt-4">
-          Liste des messages
+          {/* Indique le chargement d'une réponse */}
+          {isLoading && (
+            <div className="p-8 rounded-lg w-full flex items-center justify-center bg-muted">
+              <Loader />
+            </div>
+          )}
+          {/* Indique si il n'y as pas de conversation */}
+          {messages.length === 0 && !isLoading && (
+
+            <Empty label="Aucune conversation actuellement, commencez maintenant !" />
+          )}
+          <div className="flex flex-col-reverse gap-y-4">
+            {messages.map((message) => (
+              <div key={message.content}
+                className={cn(
+                  "p-8 w-full flex items-start gap-x-8 rounded-lg",
+                  message.role === "user" ? "bg-white border border-black/10" : "bg-muted",
+                )}
+              >
+                {/* Affichage dynamique du message selon question(user)/réponse(ai)  */}
+                {message.role === "user" ? <UserAvatar /> : <BotAvatar />}
+                <p className="text-sm">
+                  {message.content}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>

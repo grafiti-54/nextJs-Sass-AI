@@ -1,5 +1,6 @@
 import Image from "next/image"
 
+//Composant indiquant le chargement en cours.
 export const Loader = () => {
   return (
     <div className="h-full flex flex-col gap-y-4 items-center justify-center">
