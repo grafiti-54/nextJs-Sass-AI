@@ -6,6 +6,7 @@ import { Heading } from "@/components/heading";
 import { MessageSquare } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
+import { toast } from "react-hot-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 
@@ -43,6 +44,7 @@ const ConversationPage = () => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     // //console.log(values);
     try {
+      // // throw new Error("Test toast")
       const userMessage: ChatCompletionRequestMessage = { role: "user", content: values.prompt };
       const newMessages = [...messages, userMessage];
 
@@ -52,8 +54,10 @@ const ConversationPage = () => {
     } catch (error: any) {
       if (error?.response?.status === 403) {
         proModal.onOpen();
-        // //console.log("error : fini les prompt gratuits !");
+      } else {
+        toast.error("Une erreur est survenue !")
       }
+      // //console.log("error : fini les prompt gratuits !");
     } finally {
       router.refresh();
     }

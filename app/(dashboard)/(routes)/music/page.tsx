@@ -16,6 +16,7 @@ import { Loader } from "@/components/loader";
 import { useRouter } from "next/navigation";
 import { Empty } from "@/components/ui/empty";
 import { useProModal } from "@/hooks/use-pro-modal";
+import toast from "react-hot-toast";
 
 //Page pour la demande de création d'une musique par l'ai.
 const MusicPage = () => {
@@ -46,6 +47,8 @@ const MusicPage = () => {
     } catch (error: any) {
       if (error?.response?.status === 403) {
         proModal.onOpen();
+      } else {
+        toast.error("Une erreur est survenue !")
       }
       console.log(error);
     } finally {
