@@ -15,11 +15,12 @@ import { Button } from "@/components/ui/button";
 import { Loader } from "@/components/loader";
 import { useRouter } from "next/navigation";
 import { Empty } from "@/components/ui/empty";
+import { useProModal } from "@/hooks/use-pro-modal";
 
-
-
+//Page pour la demande de création d'une musique par l'ai.
 const MusicPage = () => {
   const router = useRouter();
+  const proModal = useProModal();
   const [music, setMusic] = useState<string>();
 
   //z.infer extrait le type TypeScript du schéma Zod, ce qui garantit que les données de votre formulaire correspondent au schéma défini
@@ -43,7 +44,9 @@ const MusicPage = () => {
       setMusic(response.data.audio)
       form.reset();
     } catch (error: any) {
-      //TODO Ouverture de la modal pour compte pro
+      if (error?.response?.status === 403) {
+        proModal.onOpen();
+      }
       console.log(error);
     } finally {
       router.refresh();
