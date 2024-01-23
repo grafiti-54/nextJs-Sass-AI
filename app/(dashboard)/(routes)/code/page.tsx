@@ -21,6 +21,7 @@ import { cn } from "@/lib/utils";
 import { BotAvatar } from "@/components/bot-avatar";
 import { UserAvatar } from "@/components/user-avatar";
 import { useProModal } from "@/hooks/use-pro-modal";
+import toast from "react-hot-toast";
 
 
 const CodePage = () => {
@@ -56,6 +57,8 @@ const CodePage = () => {
       if (error?.response?.status === 403) {
         proModal.onOpen();
         // //console.log("error : fini les prompt gratuits !");
+      } else {
+        toast.error("Une erreur est survenue !")
       }
     } finally {
       router.refresh();

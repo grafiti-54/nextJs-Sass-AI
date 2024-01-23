@@ -3,7 +3,7 @@
 import axios from "axios";
 import { useState } from "react";
 import { Check, Zap } from "lucide-react";
-//import { toast } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 
 import {
   Dialog,
@@ -30,12 +30,10 @@ export const ProModal = () => {
     try {
       setLoading(true);
       const response = await axios.get("/api/stripe");
-
       window.location.href = response.data.url;
     } catch (error) {
       console.log(error, "STRIPE_CLIENT_ERROR");
-
-      //toast.error("Something went wrong");
+      toast.error("Une erreur est survenue !");
     } finally {
       setLoading(false);
     }

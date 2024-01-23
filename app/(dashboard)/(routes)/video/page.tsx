@@ -16,6 +16,7 @@ import { Loader } from "@/components/loader";
 import { useRouter } from "next/navigation";
 import { Empty } from "@/components/ui/empty";
 import { useProModal } from "@/hooks/use-pro-modal";
+import toast from "react-hot-toast";
 
 //Page pour la demande de création d'une video par l'ai.
 const VideoPage = () => {
@@ -46,6 +47,8 @@ const VideoPage = () => {
     } catch (error: any) {
       if (error?.response?.status === 403) {
         proModal.onOpen();
+      } else {
+        toast.error("Une erreur est survenue !")
       }
       console.log(error);
     } finally {
@@ -115,11 +118,11 @@ const VideoPage = () => {
           )}
           {/* Génération de la musique ici */}
           {video && (
-          <video controls className="w-full aspect-video mt-8 rounded-lg border bg-black">
-            <source src={video} />
-            <track kind="captions" label="No captions available" default />
-          </video>
-        )}
+            <video controls className="w-full aspect-video mt-8 rounded-lg border bg-black">
+              <source src={video} />
+              <track kind="captions" label="No captions available" default />
+            </video>
+          )}
         </div>
       </div>
     </div>

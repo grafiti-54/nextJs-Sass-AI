@@ -220,4 +220,77 @@ Cette commande rajoute un fichier `prisma\schema.prisma` ainsi qu'une variable d
   npx prisma generate
   npx prisma studio
   ```
-```
+
+
+
+
+# STRIPE 
+
+- Dans la console, installer Stripe sur le projet :
+  ```bash
+  npm i stripe
+  ```
+
+- Créer et se connecter à son compte Stripe [ici](https://dashboard.stripe.com/login).
+- Récupérer les clés API [Stripe API Keys](https://dashboard.stripe.com/test/apikeys).
+- Dans le fichier `.env`, renseigner la clé publique API de Stripe :
+
+  ```env
+  # Clé privée
+  STRIPE_API_KEY=
+  ```
+
+- Effectuer la configuration de Stripe pour le projet dans le fichier `lib\stripe.ts` :
+
+  ```typescript
+  import Stripe from "stripe"
+
+  export const stripe = new Stripe(process.env.STRIPE_API_KEY!, {
+    apiVersion: "2023-10-16",
+    typescript: true,
+  });
+  ```
+
+- Création du modèle Prisma pour l'inscription d'un utilisateur à l'abonnement :
+
+  ```prisma
+  model UserSubscription {
+    id                    String    @id @default(cuid())
+    userId                String    @unique
+    stripeCustomerId      String?   @unique @map(name: "stripe_customer_id")
+    stripeSubscriptionId  String?   @unique @map(name: "stripe_subscription_id")
+    stripePriceId         String?   @map(name: "stripe_price_id")
+    stripeCurrentPeriodEnd DateTime? @map(name: "stripe_current_period_end")
+  }
+  ```
+
+  Générer le client Prisma et pousser la base de données :
+  ```bash
+  npx prisma generate
+  npx prisma db push
+  ```
+
+- Configuration de Stripe dans le fichier `app\api\stripe\route.ts`.
+- Configuration du webhook de Stripe dans le fichier `app\api\webhook\route.ts`.
+- Créer le webhook Stripe [ici](https://dashboard.stripe.com/test/webhooks) en cliquant sur le bouton "Tester en local".
+- Télécharger ou installer l'interface de ligne de commande (CLI) de Stripe, documentation [ici](https://stripe.com/docs/stripe-cli). Depuis la console :
+  ```bash
+  stripe login
+  stripe listen --forward-to localhost:3000/api/webhook
+  ```
+  Un message indiquant : "Ready! You are using Stripe API Version [2023-10-16]. Your webhook signing secret is ....." apparaitra.
+- Copier le webhook signing secret.
+- Coller le webhook signing secret dans le fichier `.env` dans la variable `STRIPE_WEBHOOK_SECRET`.
+- Tester l'intégration et la redirection vers Stripe dans le fichier `components\pro-modal.tsx` avec l'ajout de la fonction `onSubscribe` au moment du clic sur le bouton pour s'abonner (en mode de test, utiliser le numéro de carte 424242....).
+
+- Configurer dans le fichier `middleware.ts` la redirection après paiement effectué en rajoutant `/api/webhook` :
+
+  ```typescript
+  export default authMiddleware({
+    publicRoutes: ["/", "/api/webhook"],
+  });
+  ```
+
+- Configurer le portail client de l'utilisateur, lui permettant de voir avec Stripe son abonnement en cours et de pouvoir l'annuler, en allant sur [Stripe Billing Portal](https://dashboard.stripe.com/test/settings/billing/portal) et cliquer sur le bouton "Activer le lien".
+- Lorsque l'utilisateur clique sur le bouton "Gérer l'abonnement" sur la page settings du menu, il sera redirigé vers une page Stripe lui permettant d'effectuer ces actions.
+

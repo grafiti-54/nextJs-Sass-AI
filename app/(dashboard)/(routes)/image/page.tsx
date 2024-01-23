@@ -7,7 +7,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-//import { toast } from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import * as z from "zod";
 
 import { Heading } from "@/components/heading";
@@ -56,8 +56,7 @@ const PhotoPage = () => {
         proModal.onOpen();
       } else {
         console.log("Erreur");
-        
-        //toast.error("Something went wrong.");
+        toast.error("Something went wrong.");
       }
     } finally {
       router.refresh();
