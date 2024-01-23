@@ -6,7 +6,7 @@ import { Poppins } from 'next/font/google' //https://nextjs.org/docs/pages/build
 import { Code, ImageIcon, LayoutDashboard, MessageSquare, Music, Settings, VideoIcon } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
-// import { FreeCounter } from "@/components/free-counter";
+import { FreeCounter } from "@/components/free-counter";
 
 const poppins = Poppins ({ weight: '500', subsets: ['latin'] });
 
@@ -61,6 +61,10 @@ const routes = [
   },
 ];
 
+interface SidebarProps {
+  apiLimitCount : number;
+}
+
 
 //Composant sidebar contient les éléments à l'interieur de la barre de navigation latéral de l'utilisateur connecté.
 export const Sidebar = ({
@@ -103,10 +107,10 @@ export const Sidebar = ({
           ))}
         </div>
       </div>
-      {/* <FreeCounter 
+      <FreeCounter 
         apiLimitCount={apiLimitCount} 
-        isPro={isPro}
-      /> */}
+        //isPro={isPro}
+      />
     </div>
   );
 };

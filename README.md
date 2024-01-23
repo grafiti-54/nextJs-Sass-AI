@@ -103,4 +103,3 @@
   ```
   Possibilité de modifier le formulaire sur le site [https://dashboard.clerk.com/](https://dashboard.clerk.com/) dans la partie du menu customization.
 ```
----

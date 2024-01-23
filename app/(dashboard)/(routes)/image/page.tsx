@@ -18,12 +18,13 @@ import { Empty } from "@/components/ui/empty";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-//import { useProModal } from "@/hooks/use-pro-modal";
+import { useProModal } from "@/hooks/use-pro-modal";
 
 import { amountOptions, formSchema, resolutionOptions } from "./constants";
 
+//Page pour la demande de création d'une photo par l'ai.
 const PhotoPage = () => {
-  //const proModal = useProModal();
+  const proModal = useProModal();
   const router = useRouter();
   const [photos, setPhotos] = useState<string[]>([]);
 
@@ -52,8 +53,7 @@ const PhotoPage = () => {
     } catch (error: any) {
       if (error?.response?.status === 403) {
         console.log("erreur");
-        
-        //proModal.onOpen();
+        proModal.onOpen();
       } else {
         console.log("Erreur");
         
