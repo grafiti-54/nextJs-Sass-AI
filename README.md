@@ -163,3 +163,61 @@ Pour la vidéo (Modèle zeroscope-v2-xl) :
 - Voir le fichier `app\api\video\route.ts` dans le projet ainsi que le fichier `app\(dashboard)\(routes)\video\page.tsx`.
 ```
 
+Voici la suite de votre README au format Markdown, concernant l'installation et la configuration de Prisma :
+
+```markdown
+
+# PRISMA 
+
+Installation de Prisma sur le projet depuis la console :
+```bash
+npm i -D prisma
+npx prisma init
+```
+
+Cette commande rajoute un fichier `prisma\schema.prisma` ainsi qu'une variable d'environnement par défaut `DATABASE_URL` dans le fichier `.env`.
+- Création de la base de données sur le site [PlanetScale](https://app.planetscale.com/).
+- Créer un nouveau mot de passe pour la base de données.
+- Rechercher la configuration pour une base de données avec Prisma [ici](https://app.planetscale.com/grafiti54/sass-ai-generator/connect) et suivre les instructions.
+- Remplacer la valeur de la variable `DATABASE_URL` dans le fichier `.env`.
+- Copier et coller le code fourni dans le fichier `prisma\schema.prisma` :
+
+  ```prisma
+  datasource db {
+    provider     = "mysql"
+    url          = env("DATABASE_URL")
+    relationMode = "prisma"
+  }
+
+  generator client {
+    provider = "prisma-client-js"
+  }
+  ```
+
+- Installer le client Prisma depuis la console avec la commande suivante :
+  ```bash
+  npm i @prisma/client
+  ```
+- Créer le fichier `lib\prismadb.ts` avec le code de connexion à la base de données.
+
+  ```typescript
+  import { PrismaClient } from "@prisma/client"
+
+  declare global {
+    var prisma: PrismaClient | undefined
+  }
+
+  const prismadb = globalThis.prisma || new PrismaClient()
+  if (process.env.NODE_ENV !== "production") globalThis.prisma = prismadb
+
+  export default prismadb;
+  ```
+
+- Créer les différents modèles du projet dans le fichier `prisma\schema.prisma`.
+- Ajouter les tables des différents modèles dans la base de données depuis la console avec les commandes suivantes :
+  ```bash
+  npx prisma db push
+  npx prisma generate
+  npx prisma studio
+  ```
+```

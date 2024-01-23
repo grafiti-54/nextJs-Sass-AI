@@ -5,11 +5,11 @@ import { useState } from "react";
 import { Check, Zap } from "lucide-react";
 //import { toast } from "react-hot-toast";
 
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogHeader, 
-  DialogTitle, 
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
   DialogDescription,
   DialogFooter
 } from "@/components/ui/dialog";
@@ -21,11 +21,11 @@ import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
 //Composant modal pour proposer l'abonnement à l'utilisateur lorsqu'il dépasse la limite du plan gratuit.
-
 export const ProModal = () => {
   const proModal = useProModal();
   const [loading, setLoading] = useState(false);
 
+  //Fonction de déclanchement du processus de paiement d'un abonnement avec stripe.
   const onSubscribe = async () => {
     try {
       setLoading(true);
@@ -33,8 +33,8 @@ export const ProModal = () => {
 
       window.location.href = response.data.url;
     } catch (error) {
-        console.log("erreur");
-        
+      console.log(error, "STRIPE_CLIENT_ERROR");
+
       //toast.error("Something went wrong");
     } finally {
       setLoading(false);
@@ -47,7 +47,7 @@ export const ProModal = () => {
         <DialogHeader>
           <DialogTitle className="flex justify-center items-center flex-col gap-y-4 pb-2">
             <div className="flex items-center gap-x-2 font-bold text-xl">
-              Abonnement 
+              Abonnement
               <Badge variant="premium" className="uppercase text-sm py-1">
                 pro
               </Badge>
@@ -70,7 +70,13 @@ export const ProModal = () => {
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <Button disabled={loading} onClick={onSubscribe} size="lg" variant="premium" className="w-full">
+          <Button
+            disabled={loading}
+            onClick={onSubscribe}
+            size="lg"
+            variant="premium"
+            className="w-full"
+          >
             Mise à niveau
             <Zap className="w-4 h-4 ml-2 fill-white" />
           </Button>

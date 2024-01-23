@@ -38,8 +38,8 @@ export const MobileSidebar = ({
             {/* Contenu affiché lors du clic sur le menu hamburger grace a Sheet */}
             <SheetContent side="left" className="p-0">
                 <Sidebar
-                //isPro={isPro} 
-                //apiLimitCount={apiLimitCount} 
+                    apiLimitCount={apiLimitCount}
+                    isPro={isPro}
                 />
             </SheetContent>
         </Sheet>
