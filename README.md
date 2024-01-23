@@ -101,10 +101,6 @@
      
     export default AuthLayout;
   ```
-  Possibilité de modifier le formulaire sur le site [https://dashboard.clerk.com/](https://dashboard.clerk.com/) dans la partie du menu customization.
-```
-Voici la continuation de votre README avec les corrections orthographiques apportées :
-
   Possibilité de modifier le formulaire sur le site [https://dashboard.clerk.com/](https://dashboard.clerk.com/) dans la partie du menu de personnalisation.
 
 *******************
