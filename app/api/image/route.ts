@@ -2,7 +2,7 @@ import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 import { Configuration, OpenAIApi } from "openai";
 
-// import { checkSubscription } from "@/lib/subscription";
+import { checkSubscription } from "@/lib/subscription";
 import { incrementApiLimit, checkApiLimit } from "@/lib/api-limit";
 
 const configuration = new Configuration({
@@ -40,10 +40,10 @@ export async function POST(
     }
 
     const freeTrial = await checkApiLimit();
-    //const isPro = await checkSubscription();
+    const isPro = await checkSubscription();
 
     //Erreur status 403 va permettre de redirigé l'utilisateur coté client.
-    if (!freeTrial) {
+    if (!freeTrial && !isPro) {
       return new NextResponse("L'essai gratuit a expiré. Veuillez passer à la version Pro.", { status: 403 });
     }
 
@@ -53,11 +53,11 @@ export async function POST(
       size: resolution,
     });
 
-    //todo ispro a supprimer
-    const isPro = false
+
     if (!isPro) {
       await incrementApiLimit();
     }
+
 
     return NextResponse.json(response.data.data);
   } catch (error) {
