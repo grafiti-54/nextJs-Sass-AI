@@ -103,4 +103,67 @@
   ```
   Possibilité de modifier le formulaire sur le site [https://dashboard.clerk.com/](https://dashboard.clerk.com/) dans la partie du menu customization.
 ```
----
+Voici la continuation de votre README avec les corrections orthographiques apportées :
+
+  Possibilité de modifier le formulaire sur le site [https://dashboard.clerk.com/](https://dashboard.clerk.com/) dans la partie du menu de personnalisation.
+
+*******************
+
+- Création du layout pour le dashboard.
+- Création de la navbar et de la sidebar responsive.
+- Création du dashboard utilisateur connecté.
+- Création de la partie conversation.
+
+# API OPEN AI 
+
+Il est nécessaire d'avoir un compte payant pour l'utilisation des clés API.
+- Se connecter à son compte OpenAI et se diriger vers le lien suivant : [OpenAI API keys](https://platform.openai.com/api-keys).
+- Créer une clé API.
+- Renseigner la clé API d'OpenAI dans une variable `OPENAI_API_KEY` à l'intérieur du fichier `.env`.
+- Installer dans le projet depuis la console la dépendance d'OpenAI :
+  ```bash
+  npm i openai # version openai 3.3.0
+
+- Dans le fichier `api\conversation\route.ts`, importer les dépendances nécessaires (voir code).
+- Voir code du fichier `app\(dashboard)\(routes)\conversation\page.tsx`.
+
+# GENERATEUR D'IMAGE 
+
+- Pour autoriser les sources d'images extérieures, modifier le fichier `next.config.mjs` :
+
+  ```javascript
+  /** @type {import('next').NextConfig} */
+  const nextConfig = {
+      images: {
+          domains: [
+              "googleusercontent.com",
+              "oaidalleapiprodscus.blob.core.windows.net",
+              "cdn.openai.com"
+          ]
+      },
+  }
+
+  export default nextConfig;
+  ```
+
+- Voir code dans les fichiers `app\(dashboard)\(routes)\image\page.tsx` et `app\api\image\route.ts`.
+
+# GENERATEUR MUSIQUE - VIDEO 
+
+- Sur le projet, depuis la console, installer le package replicate avec la commande suivante :
+  ```bash
+  npm i replicate
+  ```
+- Se rendre sur le site [Replicate](https://replicate.com/) et se connecter.
+- Générer une clé API [ici](https://replicate.com/account/api-tokens).
+- Renseigner la clé API générée dans une variable d'environnement dans le fichier `.env` : `REPLICATE_API_TOKEN=`.
+
+Pour la musique (Modèle riffusion) :
+- Suivre la documentation pour le modèle choisi, fournie [ici pour Node.js](https://replicate.com/riffusion/riffusion?input=nodejs) ou [ici pour l'API](https://replicate.com/riffusion/riffusion/api?tab=nodejs).
+- Voir le fichier `app\api\music\route.ts` dans le projet ainsi que le fichier `app\(dashboard)\(routes)\music\page.tsx`.
+
+Pour la vidéo (Modèle zeroscope-v2-xl) :
+- Suivre la documentation pour le modèle choisi, fournie [ici pour Node.js](https://replicate.com/anotherjesse/zeroscope-v2-xl?input=nodejs) ou [ici pour l'API](https://replicate.com/anotherjesse/zeroscope-v2-xl/api?tab=nodejs).
+- Voir le fichier `app\api\video\route.ts` dans le projet ainsi que le fichier `app\(dashboard)\(routes)\video\page.tsx`.
+```
+
