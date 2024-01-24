@@ -294,3 +294,45 @@ Cette commande rajoute un fichier `prisma\schema.prisma` ainsi qu'une variable d
 - Configurer le portail client de l'utilisateur, lui permettant de voir avec Stripe son abonnement en cours et de pouvoir l'annuler, en allant sur [Stripe Billing Portal](https://dashboard.stripe.com/test/settings/billing/portal) et cliquer sur le bouton "Activer le lien".
 - Lorsque l'utilisateur clique sur le bouton "Gérer l'abonnement" sur la page settings du menu, il sera redirigé vers une page Stripe lui permettant d'effectuer ces actions.
 
+Voici la continuation de votre README pour la section concernant la mise en production sur Vercel, au format Markdown :
+
+```markdown
+
+# PROD VERCEL 
+
+- Dans le fichier `package.json`, ajouter le script suivant :
+  ```json
+  "postinstall": "prisma generate"
+  ```
+
+- Depuis la console, effectuer la commande suivante qui va vérifier s'il y a des erreurs sur le projet :
+  ```bash
+  npm run lint
+  ```
+
+- Créer un repo Git pour le projet.
+
+- Se rendre sur le site [Vercel](https://vercel.com/), s'identifier et créer un nouveau projet lié au repo Git créé précédemment.
+
+- Renseigner les différentes variables d'environnement du projet.
+
+- Cliquer sur le bouton "Deploy".
+
+- Récupérer l'URL du déploiement afin de modifier la variable d'environnement `NEXT_PUBLIC_APP_URL` qui est actuellement sur localhost.
+
+**Modification compte Stripe**
+- Se rendre sur le site de Stripe afin d'ajouter un endpoint webhook [Stripe Webhooks](https://dashboard.stripe.com/test/webhooks), exemple : `https://nom-du-domaine.com/api/webhooks`.
+- Ajouter les événements nécessaires en se référant au fichier `app\api\webhook\route.ts` pour ce projet ("checkout.session.completed" et "invoice.payment_succeeded").
+- Puis sur la même page, cliquer sur le bouton "Ajouter un endpoint".
+- Sur la page de redirection, récupérer la clé secrète de signature.
+- Se rendre sur le projet Vercel et modifier la variable d'environnement `STRIPE_WEBHOOK_SECRET` avec la clé récupérée précédemment.
+
+Optionnel : Remettre les données de la base de données à zéro :
+```bash
+npx prisma migrate reset
+yes
+npx prisma db push
+```
+```
+
+
