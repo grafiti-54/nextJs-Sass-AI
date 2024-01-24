@@ -281,7 +281,7 @@ Cette commande rajoute un fichier `prisma\schema.prisma` ainsi qu'une variable d
   Un message indiquant : "Ready! You are using Stripe API Version [2023-10-16]. Your webhook signing secret is ....." apparaitra.
 - Copier le webhook signing secret.
 - Coller le webhook signing secret dans le fichier `.env` dans la variable `STRIPE_WEBHOOK_SECRET`.
-- Tester l'intégration et la redirection vers Stripe dans le fichier `components\pro-modal.tsx` avec l'ajout de la fonction `onSubscribe` au moment du clic sur le bouton pour s'abonner (en mode de test, utiliser le numéro de carte 424242....).
+- Tester l'intégration et la redirection vers Stripe dans le fichier `components\pro-modal.tsx` avec l'ajout de la fonction `onSubscribe` au moment du clic sur le bouton pour s'abonner.
 
 - Configurer dans le fichier `middleware.ts` la redirection après paiement effectué en rajoutant `/api/webhook` :
 
